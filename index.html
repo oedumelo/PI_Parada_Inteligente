@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parada Inteligente - Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-mode">
+  <header>
+    <h1>Parada Inteligente - Dashboard</h1>
+    <div class="controls">
+      <select id="paradaSelect">
+        <option value="todas">Todas</option>
+        <option value="1">Parada 1</option>
+        <option value="2">Parada 2</option>
+      </select>
+      <select id="periodoSelect">
+      <option value="24h">Últimas 24 horas</option>
+      <option value="7d">Últimos 7 dias</option>
+      <option value="1m">Último mês</option>
+      <option value="3m">Últimos 3 meses</option>
+      <option value="6m">Últimos 6 meses</option>
+      <option value="1a">Último ano</option>
+      </select>
+
+      <button id="atualizarBtn">Atualizar</button>
+
+      <label class="switch">
+        <input type="checkbox" id="temaToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <section class="cards">
+    <div class="card blue">
+      <h3>Total Visual</h3>
+      <p id="totalVisual">–</p>
+    </div>
+    <div class="card orange">
+      <h3>Total Físico</h3>
+      <p id="totalFisico">–</p>
+    </div>
+    <div class="card green">
+      <h3>Parada com mais fluxo</h3>
+      <p id="topParada">–</p>
+    </div>
+  </section>
+
+  <main class="charts">
+    <div class="chart-container">
+      <h2>Cliques Totais por Tipo de Botão</h2>
+      <canvas id="totalClicksChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h2>Cliques por Horário</h2>
+      <canvas id="hourlyClicksChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h2>Comparação do Fluxo Total por Parada</h2>
+      <canvas id="comparacaoFluxoChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h2>Comparação por Tipo de Deficiência por Parada</h2>
+      <canvas id="comparacaoDeficienciaChart"></canvas>
+    </div>
+  </main>
+
+  <footer>
+    <p>Última atualização: <span id="ultimaAtualizacao">–</span></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
