@@ -68,7 +68,7 @@ async function updateCharts() {
 
   feedsPorCanal = feedsPorCanal.map(feeds => {
     const filtrados = feeds.filter(f => new Date(f.created_at) >= limiteTempo);
-    return filtrados.length > 0 ? filtrados : feeds;
+    return filtrados;
   });
 
   const allFeeds = feedsPorCanal.flat();
@@ -78,12 +78,20 @@ async function updateCharts() {
   document.getElementById("totalVisual").textContent = totalVisual;
   document.getElementById("totalFisico").textContent = totalFisico;
 
-  const fluxoTotal = feedsPorCanal.map(f => f.reduce((a, f) => a + (parseInt(f.field1) || 0) + (parseInt(f.field2) || 0), 0));
-  if (feedsPorCanal.length > 1)
-    document.getElementById("topParada").textContent = fluxoTotal[0] > fluxoTotal[1] ? "Parada 1" : "Parada 2";
-  else
-    document.getElementById("topParada").textContent = paradaSelecionada === "1" ? "Parada 1" : "Parada 2";
+  const topParadaElement = document.getElementById("topParada");
+  const fluxoTotal = feedsPorCanal.map(feeds => feeds.reduce((total, feed) => total + (parseInt(feed.field1) || 0) + (parseInt(feed.field2) || 0), 0));
+  const totalGeralDeAcionamentos = fluxoTotal.reduce((soma, valorAtual) => soma + valorAtual, 0);
 
+  if (totalGeralDeAcionamentos === 0) {
+    topParadaElement.textContent = '–';
+  } else {
+    if (paradaSelecionada === "todas") {
+      topParadaElement.textContent = fluxoTotal[0] >= fluxoTotal[1] ? "Parada 1" : "Parada 2";
+    } else {
+      topParadaElement.textContent = paradaSelecionada === "1" ? "Parada 1" : "Parada 2";
+    }
+  }
+  
   const { labels, visual, fisico } = prepareHourlyData(allFeeds);
 
   totalClicksChart.data.datasets[0].data = [totalVisual, totalFisico];
@@ -159,8 +167,17 @@ function createCharts() {
   setInterval(updateCharts, 4000);
 }
 
-document.getElementById("temaToggle").addEventListener("change", (e) => {
-  document.body.classList.toggle("dark-mode", e.target.checked);
+const themeToggle = document.getElementById("temaToggle");
+const body = document.body;
+
+function setTema(isDarkMode) {
+    body.classList.toggle("dark-mode", isDarkMode);
+    themeToggle.checked = isDarkMode;
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+}
+
+themeToggle.addEventListener("change", (e) => {
+    setTema(e.target.checked);
 });
 
 document.getElementById("paradaSelect").addEventListener("change", (e) => {
@@ -174,5 +191,9 @@ document.getElementById("periodoSelect").addEventListener("change", (e) => {
 });
 
 document.getElementById("atualizarBtn").addEventListener("click", updateCharts);
+
+
+const savedTheme = localStorage.getItem("theme");
+setTema(savedTheme === null || savedTheme === "dark");
 
 createCharts();

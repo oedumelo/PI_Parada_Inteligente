@@ -56,7 +56,6 @@ button:hover {
   cursor: pointer;
 }
 
-/* Switch de tema */
 .switch {
   position: relative;
   display: inline-block;
@@ -146,4 +145,33 @@ footer {
   padding: 15px;
   color: #aaa;
   font-size: 14px;
+}
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-icon {
+    font-size: 1.2em;
+    color: var(--text-color);
+    transition: opacity 0.3s ease;
+}
+
+#sunIcon {
+  color: rgb(255, 183, 0);
+    opacity: 0;
+}
+
+#moonIcon {
+    opacity: 1;
+}
+
+body:not(.dark-mode) #sunIcon {
+    opacity: 1;
+}
+
+body:not(.dark-mode) #moonIcon {
+    opacity: 0;
 }
